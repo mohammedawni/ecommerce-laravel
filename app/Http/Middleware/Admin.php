@@ -18,11 +18,12 @@ class Admin
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect()->route('admin.home');
+            //return redirect()->intended('admin');
+            return redirect('admin');
         }else{
-            return redirect()->route('admin.login');
+            return redirect()->route('admin.loginpage');
         }
-
         return $next($request);
+
     }
 }
