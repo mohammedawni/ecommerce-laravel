@@ -21,12 +21,12 @@ class AdminController extends Controller
         $credentials = $request->only('email', 'password');
         $rememberme = $request->rememberme == 1? true:false;
         //error_log(implode(",",$credentials).$rememberme);
-        if (Auth::guard('admin')->attempt($credentials, $rememberme )) {
-            return redirect('admin/dashboard');
-            dd($credentials,'logged in', $rememberme);
+        if (Auth::guard('admin')->attempt($credentials, $rememberme)) {
+            //dd(Auth::guard('admin')->check());
+            //dd($credentials,Auth::user());
             return redirect()->intended('admin');
         } else {
-            dd($credentials);
+            //dd($credentials,'Not logged in');
             session()->flash('errors', trans('admin.invalid_login'));
             return redirect()->route('admin.loginpage');
         }
@@ -35,10 +35,18 @@ class AdminController extends Controller
         
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        return 'you are logged out';
+        Auth::guard('admin')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
+
+
 
     public function home()
     {

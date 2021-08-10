@@ -15,15 +15,15 @@ class Admin
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next, $guard='admin')
     {
+        //dd(auth()->user());
         if (Auth::guard($guard)->check()) {
-            //return redirect()->intended('admin');
-            return redirect('admin');
+            //dd(444);
+            return $next($request);
         }else{
             return redirect()->route('admin.loginpage');
         }
-        return $next($request);
 
     }
 }
